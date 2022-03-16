@@ -8,7 +8,7 @@ This currently includes:<br>
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
    * `GD` (Genotype file,type [0,1,2])
    * `GM` (SNP marker map file with SNP names, Chrosome and Position)
-   * `Y`(Phenotype file,If the model phenotype is not used and the real phenotype prediction is directly used, please enter this file)
+   * `Y` (Phenotype file,If the model phenotype is not used and the real phenotype prediction is directly used, please enter this file)
    * `ha2` (Heritability of the simulate phenotype)
    * `cov_g` (Genetic correlation of the simulate phenotyp)
    * `NQTN` (Number of phenotype related SNPs simulated, defult=20)
