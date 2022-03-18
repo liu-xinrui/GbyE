@@ -43,13 +43,15 @@ nq=c(1:n) #Mean样本总体数量
 nq2=c(1:(n*2)) #GbyE样本总体数量
 
 #计算GbyE文件
+print("Calculating the GbyE file")
 mydata=GbyE.file.Calculate(GM=GM,GD=GD,file.output=file.output)
 GbyE.GD=mydata$GbyE.GD
 GbyE.GM=mydata$GbyE.GM
+print("The GbyE file Calculate done")
 
 #绘图参数
 if(plot==TRUE){
-pdf("Power FDR and Heritability.pdf",width=8*length(cov_g),height=8*length(ha2))
+pdf("Power FDR and Heritability.pdf",width=6*length(cov_g),height=6*length(ha2))
 par(mfrow=c(length(ha2),length(cov_g)))
 }
 #遗传力遗传相关循环
@@ -78,22 +80,23 @@ StatRep=replicate(nrep,{
 	if(SimuY==TRUE){
 	#模拟表型
 	mysimu=G_E.Simulation(GD=GD,ha2=h,NQTN=NNQTN,NE=NE,rg=rg,re=re,file.output=file.output)
-	GbyE.Y=mysimu$GbyE.Y #gbyey
-	Mean.Y=mysimu$Mean.Y
+	#GbyE.Y=mysimu$GbyE.Y #gbyey
+	#Mean.Y=mysimu$Mean.Y
+	myY=mysimu$Y
 	QTN.Position=mysimu$QTN.Position
 	#Mean.QTN.Position=mysimu$QTN.Position #QTN position
 	#GbyE.QTN.Position=mysimu$GbyE.QTN.Position
 	}else{
-			myY=Y
-			Mean.Y=myY[,-3]
-			Mean.Y[,2]=(myY[,2]+myY[,3])/2
-			myY.1=cbind(paste(myY[,1],"-1",sep=""),myY[,2])
-			myY.2=cbind(paste(myY[,1],"-2",sep=""),myY[,3])
-			GbyE.Y=rbind(myY.1,myY.2)
-			colnames(GbyE.Y)=c("taxa","trait")
-			GbyE.Y=as.data.frame(as.matrix(data.table(GbyE.Y)))
-			GbyE.Y[,2]=as.numeric(GbyE.Y[,2])
-	}
+		myY=data.frame(Y,Y)
+		}
+	Mean.Y=myY[,-3]
+	Mean.Y[,2]=(myY[,2]+myY[,3])/2
+	myY.1=cbind(paste(myY[,1],"-1",sep=""),myY[,2])
+	myY.2=cbind(paste(myY[,1],"-2",sep=""),myY[,3])
+	GbyE.Y=rbind(myY.1,myY.2)
+	colnames(GbyE.Y)=c("taxa","trait")
+	GbyE.Y=as.data.frame(as.matrix(data.table(GbyE.Y)))
+	GbyE.Y[,2]=as.numeric(GbyE.Y[,2])
 
 
 	#A Part of GWAS	
@@ -137,7 +140,7 @@ StatRep=replicate(nrep,{
 			cc=as.vector(GbyE.GWAS[QTN.Position,][,1])
 			GbyE.GWAS=GbyE.GWAS[order(GbyE.GWAS[,4]),]
 			GbyE.data=Power.FDR.Calculate(cc=cc,myGWAS=GbyE.GWAS,myGM=GbyE.GM[1:(nrow(GbyE.GM)/2),],NQTN=NNQTN)
-							
+
 			print("###########################  AddE GWAS Power VS FDR Calculate  ###########################")
 					
 			#Additive Eﬀects
@@ -289,8 +292,8 @@ if(gwas==TRUE){
 						#GGEEdata
 						GGEE_power=cbind(GGEE_power,GGEE_power_A)
 						GGEE_FDR=cbind(GGEE_FDR,GGEE_FDR_A)
-					}
-		}
+					} #end for i=1
+		} #end for i in nrep
 		rm(Mean_power_A)
 		rm(GbyE_power_A)
 		rm(AddE_power_A)
@@ -404,7 +407,7 @@ if(plot==TRUE & gwas==TRUE){
 						xlab="FDR",ylab="Power",
 						xlim = c(0,1),ylim = c(0,1),
 						col=rgb(253,10,7,255,maxColorValue=255),lwd=2,
-						main=paste("ha2=",kh," cov_e=",g,"NQTN=",NNQTN,"  Power VS FDR",sep=""))
+						main=paste("ha2=",kh," cov_e=",g," NQTN=",NNQTN,"  Power VS FDR",sep=""))
 	lines(x=Power.VS.FDR[,8],y=Power.VS.FDR[,7],type="l",col=rgb(141,172,208,255,maxColorValue=255),lwd=2)  #GGEE
 	lines(x=Power.VS.FDR[,6],y=Power.VS.FDR[,5],type="l",col=rgb(11,11,11,255,maxColorValue=255),lwd=2)  #AddE
 	lines(x=Power.VS.FDR[,4],y=Power.VS.FDR[,3],type="l",col=rgb(3,175,78,255,maxColorValue=255),lwd=2) #Mean
@@ -426,3 +429,4 @@ file.remove(dir(".", pattern="(.dat)$")) #remove Cache data
 #part of GS boxs plot
 return(list(GWAS=Power.VS.FDR,GS=GS.results))
 } #end of all
+
