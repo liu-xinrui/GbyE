@@ -87,10 +87,11 @@ StatRep=replicate(nrep,{
 	#Mean.QTN.Position=mysimu$QTN.Position #QTN position
 	#GbyE.QTN.Position=mysimu$GbyE.QTN.Position
 	}else{
-		myY=data.frame(Y,Y)
+		myY=data.frame(Y,Y[,2])
 		}
 	Mean.Y=myY[,-3]
 	Mean.Y[,2]=(myY[,2]+myY[,3])/2
+	colnames(Mean.Y)=c("taxa","trait")
 	myY.1=cbind(paste(myY[,1],"-1",sep=""),myY[,2])
 	myY.2=cbind(paste(myY[,1],"-2",sep=""),myY[,3])
 	GbyE.Y=rbind(myY.1,myY.2)
