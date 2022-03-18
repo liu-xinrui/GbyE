@@ -30,8 +30,8 @@ GbyE.file.Calculate <- function(GD,GM,file.output){
 	#rm(row.name)
 	GbyE.GD[,-1]=apply(GbyE.GD[,-1],2,as.numeric)
 	if(file.output==TRUE){
-						fwrite(GbyE.GD,paste(O_Path,"/","GbyE.GD.txt",sep=""),row.names=F,sep="\t",quote=FALSE,col.names=T)
-						fwrite(GbyE.GM,paste(O_Path,"/","GbyE.GM.txt",sep=""),row.names=F,sep="\t",quote=FALSE,col.names=T)
+						fwrite(GbyE.GD,paste(getwd(),"/","GbyE.GD.txt",sep=""),row.names=F,sep="\t",quote=FALSE,col.names=T)
+						fwrite(GbyE.GM,paste(getwd(),"/","GbyE.GM.txt",sep=""),row.names=F,sep="\t",quote=FALSE,col.names=T)
 						}else{
 								print("~~~~~~~~~The GbyE file is not output~~~~~~~~~~")
 								print("~~~~~~~~~If you want the file output~~~~~~~~~~")
