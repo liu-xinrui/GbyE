@@ -1,5 +1,23 @@
-GbyE <- function(GD=NULL,GM=NULL,Y=NULL,ha2=NULL,NQTN,NE=NULL,nrep=NULL,nfold=NULL,cov_g=NULL,cov_e=NULL,
-							SimuY=NULL,gwas=NULL,gs=NULL,nIter=NULL,burnIn=NULL,plot=NULL,file.output=NULL){
+GbyE <- function(
+	GD=NULL,
+	GM=NULL,
+	GbyE.GD=NULL,
+	GbyE.GM=NULL,
+	Y=NULL,
+	ha2=NULL,
+	NQTN,
+	NE=NULL,
+	nrep=NULL,
+	nfold=NULL,
+	cov_g=NULL,
+	cov_e=NULL,
+	SimuY=NULL,
+	gwas=NULL,
+	gs=NULL,
+	nIter=NULL,
+	burnIn=NULL,
+	plot=NULL,
+	file.output=NULL){
 
 if(is.null(GD)){stop("The value of GD is null")}
 if(is.null(GM)){stop("The value of GM is null")}
@@ -43,12 +61,14 @@ nq=c(1:n) #Mean样本总体数量
 nq2=c(1:(n*2)) #GbyE样本总体数量
 
 #计算GbyE文件
+if(is.null(GbyE.GM && GbyE.GD))
+{
 print("Calculating the GbyE file")
 mydata=GbyE.file.Calculate(GM=GM,GD=GD,file.output=file.output)
 GbyE.GD=mydata$GbyE.GD
 GbyE.GM=mydata$GbyE.GM
 print("The GbyE file Calculate done")
-
+}
 #绘图参数
 if(plot==TRUE){
 pdf("Power FDR and Heritability.pdf",width=6*length(cov_g),height=6*length(ha2))
