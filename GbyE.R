@@ -61,7 +61,7 @@ nq=c(1:n) #Mean样本总体数量
 nq2=c(1:(n*2)) #GbyE样本总体数量
 
 #计算GbyE文件
-if(is.null(GbyE.GM && GbyE.GD))
+if(is.null(GbyE.GM=NULL && GbyE.GD=NULL))
 {
 print("Calculating the GbyE file")
 mydata=GbyE.file.Calculate(GM=GM,GD=GD,file.output=file.output)
