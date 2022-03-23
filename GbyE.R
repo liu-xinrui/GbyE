@@ -67,7 +67,7 @@ if(is.null(GbyE.GM) & is.null(GbyE.GD)){
 	GbyE.GD=mydata$GbyE.GD
 	GbyE.GM=mydata$GbyE.GM
 	print("The GbyE file Calculate done")
-}esle{
+}else{
 	print("The GbyE file has been entered")
 	}
 #绘图参数
