@@ -38,8 +38,8 @@ if(is.null(cov_e)){cov_e=1
 		}else{
 			if(is.null(Y)){stop("The value of Y is null")}
 			if(is.null(ha2)){ha2="real"}
-			if(is.null(NQTN)){ha2="real"}
-			if(is.null(cov_g)){ha2="real"}
+			if(is.null(NQTN)){NQTN="real"}
+			if(is.null(cov_g)){cov_g="real"}
 			if(is.null(cov_e)){cov_e="real"}
 		}
 if(is.null(gwas))
@@ -60,6 +60,10 @@ n=nrow(GD)
 nq=c(1:n) #Mean样本总体数量
 nq2=c(1:(n*2)) #GbyE样本总体数量
 
+#处理数据类型
+GD[,1]=as.character(GD[,1])
+Y[,1]=as.character(Y[,1])
+
 #计算GbyE文件
 if(is.null(GbyE.GM) & is.null(GbyE.GD)){
 	print("Calculating the GbyE file")
@@ -69,6 +73,7 @@ if(is.null(GbyE.GM) & is.null(GbyE.GD)){
 	print("The GbyE file Calculate done")
 	}else{
 	print("The GbyE file has been entered")
+	GbyE.GD[,1]=as.character(GbyE.GD[,1])
 	}
 #绘图参数
 if(plot==TRUE){
@@ -91,9 +96,8 @@ for(g in cov_g){
 mean.rep=NULL
 gbye.rep=NULL
 gexd.rep=NULL
-
+krep=1
 StatRep=replicate(nrep,{
-	krep=1
 	#报告循环到第几次了
 	print(paste("The GbyE program is running its",krep,"cycle",sep=" "))
 	krep=krep+1
@@ -108,6 +112,7 @@ StatRep=replicate(nrep,{
 	#Mean.QTN.Position=mysimu$QTN.Position #QTN position
 	#GbyE.QTN.Position=mysimu$GbyE.QTN.Position
 	}else{
+		Y[,1]=as.character(Y[,1])
 		myY=data.frame(Y,Y[,2])
 		}
 	Mean.Y=myY[,-3]
