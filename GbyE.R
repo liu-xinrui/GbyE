@@ -5,7 +5,7 @@ GbyE <- function(
 	GbyE.GM=NULL,
 	Y=NULL,
 	ha2=NULL,
-	NQTN,
+	NQTN=NULL,
 	NE=NULL,
 	nrep=NULL,
 	nfold=NULL,
@@ -61,8 +61,8 @@ nq=c(1:n) #Mean样本总体数量
 nq2=c(1:(n*2)) #GbyE样本总体数量
 
 #处理数据类型
-GD[,1]=as.character(GD[,1])
-Y[,1]=as.character(Y[,1])
+GD[,1]=as.factor(GD[,1])
+Y[,1]=as.factor(Y[,1])
 
 #计算GbyE文件
 if(is.null(GbyE.GM) & is.null(GbyE.GD)){
@@ -73,8 +73,9 @@ if(is.null(GbyE.GM) & is.null(GbyE.GD)){
 	print("The GbyE file Calculate done")
 	}else{
 	print("The GbyE file has been entered")
-	GbyE.GD[,1]=as.character(GbyE.GD[,1])
+	GbyE.GD[,1]=as.factor(GbyE.GD[,1])
 	}
+	
 #绘图参数
 if(plot==TRUE){
 pdf("Power FDR and Heritability.pdf",width=6*length(cov_g),height=6*length(ha2))
@@ -112,8 +113,10 @@ StatRep=replicate(nrep,{
 	#Mean.QTN.Position=mysimu$QTN.Position #QTN position
 	#GbyE.QTN.Position=mysimu$GbyE.QTN.Position
 	}else{
-		Y[,1]=as.character(Y[,1])
-		myY=data.frame(Y,Y[,2])
+		Y[,1]=as.factor(Y[,1])
+		myY=Y[,1:3]
+		print("Only the first two phenotypes of the phenotype data are read")
+		print("The first is assumed to be additive effect and the second is assumed to be interactive effect")
 		}
 	Mean.Y=myY[,-3]
 	Mean.Y[,2]=(myY[,2]+myY[,3])/2
@@ -231,12 +234,12 @@ StatRep=replicate(nrep,{
      		gbye.cor=as.matrix(GbyE.GD[raw.G,-1]) %*% GbyE.method$u
       		gbye=append(gbye,cor(GbyE.Y[raw.G,2],gbye.cor))
 
-      		#GExd
+      		#Gbyes
       		GExd.GD<-list(list(X=GbyE.GD[,2:ncol(GD)],model='BRR'),list(X=GbyE.GD[,(ncol(GD)+1):(ncol(GD)*2-1)],model='BRR')) #list两部分
       		#Additive effects and interaction effects are calculated separately
       		brrY=GbyE.Y 
       		brrY[raw.G,2]=NA #GExd的表型缺失，BGLR包要求为缺失对应
-      		GExd.method<-BGLR(y=as.numeric(brrY[,2]),ETA=GExd.GD, nIter=nIter, burnIn=burnIn)
+      		GExd.method <-BGLR(y=as.numeric(brrY[,2]),ETA=GExd.GD, nIter=nIter, burnIn=burnIn)
       		gexd=append(gexd,cor(GbyE.Y[raw.G,2],GExd.method$yHat[raw.G]))
 		}
 
