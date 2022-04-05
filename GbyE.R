@@ -123,10 +123,10 @@ StatRep=replicate(nrep,{
 	colnames(Mean.Y)=c("taxa","trait")
 	myY.1=cbind(paste(myY[,1],"-1",sep=""),myY[,2])
 	myY.2=cbind(paste(myY[,1],"-2",sep=""),myY[,3])
-	GbyE.Y=rbind(myY.1,myY.2)
+	GbyE.Y=data.frame(rbind(myY.1,myY.2))
 	colnames(GbyE.Y)=c("taxa","trait")
-	GbyE.Y=as.data.frame(as.matrix(data.table(GbyE.Y)))
-	GbyE.Y[,2]=as.numeric(GbyE.Y[,2])
+	#GbyE.Y=as.data.frame(as.matrix(data.table(GbyE.Y)))
+	GbyE.Y[,2]=as.numeric(as.character(GbyE.Y[,2]))
 
 
 	#A Part of GWAS	
