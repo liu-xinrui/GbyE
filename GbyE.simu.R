@@ -8,6 +8,8 @@ function(GD,h2,covg=1,ysdmean=0,qtn=FALSE,nqtn=NULL){
 	if(qtn==FALSE){
 		if(is.null(nqtn)) stop("Please enter the number of QTN")
 		QTL <- sample(1:ncol(D),nqtn,replace = FALSE)
+		}else{
+			QTL=qtn
 		}
 	u <-rep(0,ncol(D)) #marker effects
 	u[QTL] <- covg
