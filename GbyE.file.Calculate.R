@@ -15,9 +15,10 @@ GbyE.file.Calculate <- function(GD,GM,file.output){
 		print("The Chr is not numeric")
 		GM.L1=GM
 		GM.L2=GM
-		GM.L2[,2]=GM.L2[,2]+10*(length(unlist(strsplit(as.character(max(GM[,3])),"")))+1)
+		#GM.L2[,2]=GM.L2[,2]+10*(length(unlist(strsplit(as.character(max(GM[,3])),"")))+1)
 		GM.L1[,1]=paste(GM.L1[,1],"-1",sep="")
 		GM.L2[,1]=paste(GM.L2[,1],"-2",sep="")
+		GM.L2[,2]=paste(GM.L2[,2],"_2",sep="")
 		GbyE.GM=rbind(GM.L1,GM.L2)
 		}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GbyE.GD的处理
