@@ -1,6 +1,8 @@
 GbyE.file.Calculate <- function(GD,GM,file.output){
 #library(data.table)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GbyE.GM的处理
+	if(is.numeric(GM[,2])==TRUE){
+	print("The Chr is numeric")
 	GM.L1=GM
 	GM.L2=GM
 	GM.L2[,2]=GM.L2[,2]+max(GM.L2[,2])
@@ -9,6 +11,15 @@ GbyE.file.Calculate <- function(GD,GM,file.output){
 	GbyE.GM=rbind(GM.L1,GM.L2)
 	#rm(GM.L1)
 	#rm(GM.L2)
+		}else{
+		print("The Chr is not numeric")
+		GM.L1=GM
+		GM.L2=GM
+		GM.L2[,2]=GM.L2[,2]+10*(length(unlist(strsplit(as.character(max(GM[,3])),"")))+1)
+		GM.L1[,1]=paste(GM.L1[,1],"-1",sep="")
+		GM.L2[,1]=paste(GM.L2[,1],"-2",sep="")
+		GbyE.GM=rbind(GM.L1,GM.L2)
+		}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GbyE.GD的处理
 	GD.d=apply(GD[,-1],2,as.numeric)
 	Matrix.r=matrix(1,2,2)
