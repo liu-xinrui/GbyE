@@ -1,16 +1,27 @@
 `GbyE.simu` <- 
-function(GD,h2,covg=1,ysdmean=0,qtn=FALSE,nqtn=NULL){
+function(GD,h2,covg=1,ysdmean=0,qtn=NULL,nqtn=NULL,qtn.cor=1){
 	D=GD[,2:ncol(GD)]
 	D1=as.data.frame(as.matrix(D))
 	D2=t(D1)
-	#QTL <- 100*(1:20) #pick 20 QTL
 	#构建真实QTL
-	if(qtn==FALSE){
+	if(is.null(qtn)==TRUE){
 		if(is.null(nqtn)) stop("Please enter the number of QTN")
-		QTL <- sample(1:ncol(D),nqtn,replace = FALSE)
+		QTL <- sample(1:ncol(D),nqtn,replace = FALSE) #pick up QTL
 		}else{
-			QTL=qtn
+			if(qtn.cor==1){
+				QTL=qtn
+				}else{
+					if(qtn.cor==0){
+						qtn=sample(setdiff(1:ncol(GD),qtn),length(qtn),replace = FALSE)
+					}else{
+						setpoint=round(qtn.cor*length(qtn))
+						cor=sample(qtn,setpoint,replace = FALSE)
+						sqtn=sample(setdiff(1:ncol(GD),cor),(length(qtn)-setpoint),replace = FALSE)
+						QTL=c(cor,sqtn)
+					}
+				}
 		}
+
 	u <-rep(0,ncol(D)) #marker effects
 	u[QTL] <- covg
 	#求SNP效应
@@ -21,6 +32,5 @@ function(GD,h2,covg=1,ysdmean=0,qtn=FALSE,nqtn=NULL){
 	colnames(y)=c("Taxa","trait")
 	#Saving simulated file
 	return(list(Y=y,QTL.position=QTL))
-	#write.table(y,"H60Q20.txt", sep="\t")
 }
 
