@@ -871,5 +871,3 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
     class(out) = "BGLR"
     return(out)
 }
-<bytecode: 0x000002a8ad930ae0>
-<environment: namespace:BGLR>
