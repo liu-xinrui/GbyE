@@ -8,7 +8,7 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
     }
     IDs = names(y)
     if (!(response_type %in% c("gaussian", "ordinal"))) 
-        stop(" Only gaussian and ordinal responses are allowed\n")
+        stop("Only gaussian and ordinal responses are allowed")
     if (saveAt == "") {
         saveAt = paste(getwd(), "/", sep = "")
     }
@@ -27,14 +27,14 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
         groups = as.integer(groups)
         ggg = as.integer(groups - 1)
         if (sum(countGroups) != n) 
-            stop("length of groups and y differs, NA's not allowed in groups\n")
+            stop("length of groups and y differs, NA's not allowed in groups")
     }
     if (response_type == "ordinal") {
         y = factor(y, ordered = TRUE)
         lev = levels(y)
         nclass = length(lev)
         if (nclass == n) 
-            stop("The number of classes in y must be smaller than the number of observations\n")
+            stop("The number of classes in y must be smaller than the number of observations")
         y = as.integer(y)
         z = y
         fname = paste(saveAt, "thresholds.dat", sep = "")
@@ -57,9 +57,9 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
         if ((!is.null(a)) | (!is.null(b))) {
             Censored = TRUE
             if ((length(a) != n) | (length(b) != n)) 
-                stop(" y, a and b must have the same dimension\n")
+                stop("y, a and b must have the same dimension")
             if (any(weights != 1)) 
-                stop(" Weights are only implemented for Gausian uncensored responses\n")
+                stop("Weights are only implemented for Gausian uncensored responses")
         }
         mu = weighted.mean(x = y, w = weights, na.rm = TRUE)
     }
@@ -70,18 +70,18 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
         unlink(fname)
     }
     else {
-        cat(" Note: samples will be appended to existing files. \n")
+        message("Note: samples will be appended to existing files")
     }
     fileOutMu = file(description = fname, open = "w")
     if (response_type == "ordinal") {
         if (verbose) {
-            cat(" Prior for residual is not necessary, if you provided it, it will be ignored\n")
+            message("Prior for residual is not necessary, if you provided it, it will be ignored")
         }
         if (any(weights != 1)) 
-            stop(" Weights are not supported \n")
+            stop("Weights are not supported")
         countsZ = table(z)
         if (nclass <= 1) 
-            stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values\n"))
+            stop("Data vector y has only ", nclass, " differente values, it should have at least 2 different values")
         threshold = qnorm(p = c(0, cumsum(as.vector(countsZ)/n)))
         y = rtrun(mu = 0, sigma = 1, a = threshold[z], b = threshold[(z + 
             1)])
@@ -129,18 +129,17 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 ETA[[i]]$Name = paste("ETA_", names(ETA)[i], 
                   sep = "")
             }
-            if (!(ETA[[i]]$model %in% c("FIXED", "BRR", "BL", 
-                "BayesA", "BayesB", "BayesC", "RKHS", "BRR_sets"))) {
-                stop(paste(" Error in ETA[[", i, "]]", " model ", 
-                  ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).", 
-                  sep = ""))
+            if (!(ETA[[i]]$model %in% c("FIXED", "BRR", 
+                "BL", "BayesA", "BayesB", "BayesC", 
+                "RKHS", "BRR_sets"))) {
+                stop("Error in ETA[[", i, "]]", " model ", 
+                  ETA[[i]]$model, " not implemented (note: evaluation is case sensitive)")
             }
             if (!is.null(groups)) {
-                if (!(ETA[[i]]$model %in% c("BRR", "FIXED", "BayesB", 
-                  "BayesC"))) 
-                  stop(paste(" Error in ETA[[", i, "]]", " model ", 
-                    ETA[[i]]$model, " not implemented for groups\n", 
-                    sep = ""))
+                if (!(ETA[[i]]$model %in% c("BRR", "FIXED", 
+                  "BayesB", "BayesC"))) 
+                  stop("Error in ETA[[", i, "]]", 
+                    " model ", ETA[[i]]$model, " not implemented for groups")
             }
             ETA[[i]] = switch(ETA[[i]]$model, FIXED = setLT.Fixed(LT = ETA[[i]], 
                 n = n, j = i, weights = weights, y = y, nLT = nLT, 
@@ -149,19 +148,19 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 n = n, j = i, weights = weights, y = y, nLT = nLT, 
                 R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
                 groups = groups, nGroups = nGroups, verbose = verbose, 
+                thin = thin, nIter = nIter, burnIn = burnIn, 
+                lower_tri = ETA[[i]]$lower_tri), BL = setLT.BL(LT = ETA[[i]], 
+                n = n, j = i, weights = weights, y = y, nLT = nLT, 
+                R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
+                verbose = verbose, thin = thin, nIter = nIter, 
+                burnIn = burnIn), RKHS = setLT.RKHS(LT = ETA[[i]], 
+                n = n, j = i, weights = weights, y = y, nLT = nLT, 
+                R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
+                verbose = verbose), BayesC = setLT.BayesBandC(LT = ETA[[i]], 
+                n = n, j = i, weights = weights, y = y, nLT = nLT, 
+                R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
+                groups = groups, nGroups = nGroups, verbose = verbose, 
                 thin = thin, nIter = nIter, burnIn = burnIn), 
-                BL = setLT.BL(LT = ETA[[i]], n = n, j = i, weights = weights, 
-                  y = y, nLT = nLT, R2 = R2, saveAt = saveAt, 
-                  rmExistingFiles = rmExistingFiles, verbose = verbose, 
-                  thin = thin, nIter = nIter, burnIn = burnIn), 
-                RKHS = setLT.RKHS(LT = ETA[[i]], n = n, j = i, 
-                  weights = weights, y = y, nLT = nLT, R2 = R2, 
-                  saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
-                  verbose = verbose), BayesC = setLT.BayesBandC(LT = ETA[[i]], 
-                  n = n, j = i, weights = weights, y = y, nLT = nLT, 
-                  R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
-                  groups = groups, nGroups = nGroups, verbose = verbose, 
-                  thin = thin, nIter = nIter, burnIn = burnIn), 
                 BayesA = setLT.BayesA(LT = ETA[[i]], n = n, j = i, 
                   weights = weights, y = y, nLT = nLT, R2 = R2, 
                   saveAt = saveAt, rmExistingFiles = rmExistingFiles, 
@@ -206,9 +205,9 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 if (ETA[[j]]$model == "FIXED") {
                   varBj = rep(ETA[[j]]$varB, ETA[[j]]$p)
                   if (!is.null(groups)) {
-                    ans = .Call("sample_beta_groups", n, ETA[[j]]$p, 
-                      ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, e, 
-                      varBj, varE, 1e-09, ggg, nGroups)
+                    ans = .Call("sample_beta_groups", n, 
+                      ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                      e, varBj, varE, 1e-09, ggg, nGroups)
                   }
                   else {
                     ans = .Call("sample_beta", n, ETA[[j]]$p, 
@@ -221,14 +220,21 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 if (ETA[[j]]$model == "BRR") {
                   varBj = rep(ETA[[j]]$varB, ETA[[j]]$p)
                   if (!is.null(groups)) {
-                    ans = .Call("sample_beta_groups", n, ETA[[j]]$p, 
-                      ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, e, 
-                      varBj, varE, 1e-09, ggg, nGroups)
+                    ans = .Call("sample_beta_groups", n, 
+                      ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                      e, varBj, varE, 1e-09, ggg, nGroups)
                   }
                   else {
-                    ans = .Call("sample_beta", n, ETA[[j]]$p, 
-                      ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, e, 
-                      varBj, varE, 1e-09)
+                    if (!(ETA[[j]]$lower_tri)) {
+                      ans = .Call("sample_beta", n, ETA[[j]]$p, 
+                        ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                        e, varBj, varE, 1e-09)
+                    }
+                    else {
+                      ans = .Call("sample_beta_lower_tri", 
+                        n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, 
+                        ETA[[j]]$b, e, ETA[[j]]$varB, varE, 1e-09)
+                    }
                   }
                   ETA[[j]]$b = ans[[1]]
                   e = ans[[2]]
@@ -237,21 +243,22 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                   ETA[[j]]$varB = SS/rchisq(df = DF, n = 1)
                 }
                 if (ETA[[j]]$model == "BRR_sets") {
-                  ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, 
-                    ETA[[j]]$x2, ETA[[j]]$b, e, ETA[[j]]$varB, 
+                  ans = .Call("sample_beta", n, ETA[[j]]$p, 
+                    ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, e, ETA[[j]]$varB, 
                     varE, 1e-09)
                   ETA[[j]]$b = ans[[1]]
                   e = ans[[2]]
                   SS = tapply(X = ETA[[j]]$b^2, INDEX = ETA[[j]]$sets, 
                     FUN = sum) + ETA[[j]]$S0
-                  tmp = SS/rchisq(df = ETA[[j]]$DF1, n = ETA[[j]]$n_sets)
-                  ETA[[j]]$varB = tmp[ETA[[j]]$sets]
+                  ETA[[j]]$varSets = SS/rchisq(df = ETA[[j]]$DF1, 
+                    n = ETA[[j]]$n_sets)
+                  ETA[[j]]$varB = ETA[[j]]$varSets[ETA[[j]]$sets]
                 }
                 if (ETA[[j]]$model == "BL") {
                   varBj = ETA[[j]]$tau2 * varE
-                  ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, 
-                    ETA[[j]]$x2, ETA[[j]]$b, e, varBj, varE, 
-                    ETA[[j]]$minAbsBeta)
+                  ans = .Call("sample_beta", n, ETA[[j]]$p, 
+                    ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, e, varBj, 
+                    varE, ETA[[j]]$minAbsBeta)
                   ETA[[j]]$b = ans[[1]]
                   e = ans[[2]]
                   nu = sqrt(varE) * ETA[[j]]$lambda/abs(ETA[[j]]$b)
@@ -315,9 +322,9 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 }
                 if (ETA[[j]]$model == "BayesA") {
                   varBj = ETA[[j]]$varB
-                  ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, 
-                    ETA[[j]]$x2, ETA[[j]]$b, e, varBj, varE, 
-                    1e-09)
+                  ans = .Call("sample_beta", n, ETA[[j]]$p, 
+                    ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, e, varBj, 
+                    varE, 1e-09)
                   ETA[[j]]$b = ans[[1]]
                   e = ans[[2]]
                   SS = ETA[[j]]$S + ETA[[j]]$b^2
@@ -339,10 +346,10 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                         varE, 1e-09, ETA[[j]]$probIn, ggg, nGroups)
                     }
                     else {
-                      ans = .Call("sample_beta_BB_BCp", n, ETA[[j]]$p, 
-                        ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
-                        ETA[[j]]$d, e, ETA[[j]]$varB, varE, 1e-09, 
-                        ETA[[j]]$probIn)
+                      ans = .Call("sample_beta_BB_BCp", 
+                        n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, 
+                        ETA[[j]]$b, ETA[[j]]$d, e, ETA[[j]]$varB, 
+                        varE, 1e-09, ETA[[j]]$probIn)
                     }
                   }
                   else {
@@ -354,10 +361,10 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                         ggg, nGroups)
                     }
                     else {
-                      ans = .Call("sample_beta_BB_BCp", n, ETA[[j]]$p, 
-                        ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
-                        ETA[[j]]$d, e, rep(ETA[[j]]$varB, ETA[[j]]$p), 
-                        varE, 1e-09, ETA[[j]]$probIn)
+                      ans = .Call("sample_beta_BB_BCp", 
+                        n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, 
+                        ETA[[j]]$b, ETA[[j]]$d, e, rep(ETA[[j]]$varB, 
+                          ETA[[j]]$p), varE, 1e-09, ETA[[j]]$probIn)
                     }
                   }
                   ETA[[j]]$d = ans[[1]]
@@ -473,6 +480,10 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                     write(ETA[[j]]$varB, file = ETA[[j]]$fileOut, 
                       append = TRUE)
                   }
+                  if (ETA[[j]]$model == "BRR_sets") {
+                    write(ETA[[j]]$varSets, ncolumns = ETA[[j]]$n_sets, 
+                      file = ETA[[j]]$fileOut, append = TRUE)
+                  }
                   if (ETA[[j]]$model == "BL") {
                     write(ETA[[j]]$lambda, file = ETA[[j]]$fileOut, 
                       append = TRUE)
@@ -527,7 +538,9 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                         k + (ETA[[j]]$varB^2)/nSums
                       if (ETA[[j]]$saveEffects && (i%%ETA[[j]]$thin) == 
                         0) {
-                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects)
+                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects, 
+                          size = ifelse(ETA[[j]]$storageMode == 
+                            "single", 4, 8))
                       }
                     }
                     if (ETA[[j]]$model == "BRR_sets") {
@@ -540,12 +553,14 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_varB2 = ETA[[j]]$post_varB2 * 
                         k + (ETA[[j]]$varB^2)/nSums
                       ETA[[j]]$post_varSets <- ETA[[j]]$post_varSets * 
-                        k + tmp/nSums
+                        k + ETA[[j]]$varSets/nSums
                       ETA[[j]]$post_varSets2 <- ETA[[j]]$post_varSets2 * 
-                        k + (tmp^2)/nSums
+                        k + (ETA[[j]]$varSets^2)/nSums
                       if (ETA[[j]]$saveEffects && (i%%ETA[[j]]$thin) == 
                         0) {
-                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects)
+                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects, 
+                          size = ifelse(ETA[[j]]$storageMode == 
+                            "single", 4, 8))
                       }
                     }
                     if (ETA[[j]]$model == "BL") {
@@ -559,7 +574,9 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                         k + (ETA[[j]]$lambda)/nSums
                       if (ETA[[j]]$saveEffects && (i%%ETA[[j]]$thin) == 
                         0) {
-                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects)
+                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects, 
+                          size = ifelse(ETA[[j]]$storageMode == 
+                            "single", 4, 8))
                       }
                     }
                     if (ETA[[j]]$model == "RKHS") {
@@ -592,7 +609,8 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                       if (ETA[[j]]$saveEffects && (i%%ETA[[j]]$thin) == 
                         0) {
                         writeBin(object = ETA[[j]]$b * ETA[[j]]$d, 
-                          con = ETA[[j]]$fileEffects)
+                          con = ETA[[j]]$fileEffects, size = ifelse(ETA[[j]]$storageMode == 
+                            "single", 4, 8))
                       }
                     }
                     if (ETA[[j]]$model == "BayesA") {
@@ -610,7 +628,9 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                         (ETA[[j]]$S^2)/nSums
                       if (ETA[[j]]$saveEffects && (i%%ETA[[j]]$thin) == 
                         0) {
-                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects)
+                        writeBin(object = ETA[[j]]$b, con = ETA[[j]]$fileEffects, 
+                          size = ifelse(ETA[[j]]$storageMode == 
+                            "single", 4, 8))
                       }
                     }
                     if (ETA[[j]]$model == "BayesB") {
@@ -635,7 +655,8 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                       if (ETA[[j]]$saveEffects && (i%%ETA[[j]]$thin) == 
                         0) {
                         writeBin(object = ETA[[j]]$b * ETA[[j]]$d, 
-                          con = ETA[[j]]$fileEffects)
+                          con = ETA[[j]]$fileEffects, size = ifelse(ETA[[j]]$storageMode == 
+                            "single", 4, 8))
                       }
                     }
                   }
@@ -689,12 +710,12 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 post_logLik = post_logLik * k + logLik/nSums
             }
         }
-        if (verbose&(i%%500==0)) {
-            #cat("---------------------------------------\n")
-            tmp = proc.time()[3]
-            #cat(c(paste(c("  Iter=", "Time/Iter="), round(c(i, 
-            #    c(tmp - time)), 3), sep = "")), "\n")
-            #cat("  VarE=", round(varE, 3), "\n")
+        if (verbose) {
+            #message("---------------------------------------")
+            #tmp = proc.time()[3]
+            #message("Iter=", i, " Time/Iter=", round(tmp - 
+            #    time, 3))
+            #message("VarE=", round(varE, 3))
             time = tmp
         }
     }
@@ -712,6 +733,11 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
             if (!is.null(ETA[[i]]$fileEffects)) {
                 flush(ETA[[i]]$fileEffects)
                 close(ETA[[i]]$fileEffects)
+                if (!is.null(ETA[[i]]$compressEffects) && ETA[[i]]$compressEffects == 
+                  TRUE) {
+                  compressFile(paste0(saveAt, ETA[[i]]$Name, 
+                    "_b.bin"))
+                }
                 ETA[[i]]$fileEffects = NULL
             }
         }
@@ -795,11 +821,12 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
                 ETA[[i]]$SD.varU = sqrt(ETA[[i]]$post_varU2 - 
                   ETA[[i]]$post_varU^2)
                 tmp = which(names(ETA[[i]]) %in% c("post_varU", 
-                  "post_varU2", "post_uStar", "post_u", "post_u2"))
+                  "post_varU2", "post_uStar", "post_u", 
+                  "post_u2"))
                 ETA[[i]] = ETA[[i]][-tmp]
             }
-            if (ETA[[i]]$model %in% c("BRR", "BRR_sets", "BayesA", 
-                "BayesC", "BayesB")) {
+            if (ETA[[i]]$model %in% c("BRR", "BRR_sets", 
+                "BayesA", "BayesC", "BayesB")) {
                 ETA[[i]]$varB = ETA[[i]]$post_varB
                 ETA[[i]]$SD.varB = sqrt(ETA[[i]]$post_varB2 - 
                   (ETA[[i]]$post_varB^2))
@@ -844,3 +871,5 @@ BGLR<- function (y, response_type = "gaussian", a = NULL, b = NULL,
     class(out) = "BGLR"
     return(out)
 }
+<bytecode: 0x000002a8ad930ae0>
+<environment: namespace:BGLR>
