@@ -14,7 +14,7 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
    * `NQTN` (Number of phenotype related SNPs simulated, defult=20)
    * `nrep` (Number of iterations)
    * `nfold` (CV Multiple cross validation)
-   * `nIter` & `burnIn` (set Markov chain length of the R packages "**rrBLUP**")
+   * `nIter` & `burnIn` (set Markov chain length of the R packages "**BGLR**")
    * `gwas` (defult=T, Whether to perform GWAS operation)
    * `gs` (defult=T, Whether to perform GS operation)
    * `file.output` (Whether the operation result file is output)
