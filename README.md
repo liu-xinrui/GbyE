@@ -1,7 +1,6 @@
 # **GbyE**
 Effect model of gene-environment interaction, involved in predictive analysis of GWAS and GS<br>
-<br>
-# **Introduction**<br>
+# **Introduction**
 <br>
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
