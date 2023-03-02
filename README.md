@@ -38,7 +38,13 @@ GM=read.table("mdp_SNP_information.txt",head=T)
 Y=read.table("mdp_traits.txt",head=T)
 Y=Y[match(GD[,1],Y[,1]),]
 #running
-myGbyE=GbyE(GD=GD,GM=GM,Y=Y,PCA.total=3,gwas=F,gs=T,plot=T,gwas.model="MLM",method="gapit")
+myGbyE=GbyE(GD=GD,
+            GM=GM,Y=Y,
+            PCA.total=3,
+            gwas=F,gs=T,
+            plot=T,
+            gwas.model="MLM",
+            method="gapit")
 ```
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
