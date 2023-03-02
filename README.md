@@ -28,7 +28,7 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
 ***Quantile-Quantile Plots*** <br>
 ![QQ Plot by demo data](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/QQplot.jpg)
 <br>
-## **How to use**
+# **How to use**
 ```
 #Loading support packages
 source("https://raw.githubusercontent.com/liu-xinrui/GbyE/main/GbyE.R")
