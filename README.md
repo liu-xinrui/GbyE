@@ -22,7 +22,7 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
    * `dpi`(Set the resolution of the output image, default=600)
 ## **Output**
 The output results contain three panels, `GbyE`, `GWAS` and `GS`. `GbyE` mainly includes the output GbyE genotype file and phenotype file. `GWAS` mainly includes additive effect `adde`, reciprocal effect `GXE`, overall `summary` result of GWAS, `GMM` mapping parameter file. `GS` contains mainly, prediction results of all missing values `pred`. The prediction parameters of `rrBLUP`. The prediction parameters of GAPIT software, `gapit`. The prediction parameters of BGLR software, `bglr`.
-Translated with www.DeepL.com/Translator (free version)
+![GbyE](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/GbyE.png)
 # **Predictable results**
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
 ## **Genome-wide association studies**
