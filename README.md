@@ -22,7 +22,10 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
 # **Predictable results**
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
 ## **Genome-wide association studies**
-Manhattan Plot <br>
+Manhattan Plots <br>
+![Manhattan Plot by demo data](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/Manhattan.jpg)
+Quantile-Quantile Plots <br>
+![QQ Plot by demo data](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/QQplot.jpg)
 <br>
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
