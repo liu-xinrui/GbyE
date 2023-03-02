@@ -2,12 +2,24 @@
 Effect model of gene-environment interaction, involved in predictive analysis of GWAS and GS<br>
 # **Introduction**
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
+   * `GD` (Genotype file,type [0,1,2])
+   * `GM` (SNP marker map file with SNP names, Chrosome and Position)
+   * `Y` (Phenotype file,The phenotype file must contain two environments or two traits)
+   * `GbyE.GD``GbyE.GM` (If you have previously performed GbyE operations and saved a GbyE file, you can add the file directly to GbyE to reduce the time cost incurred by calculating again)
+   * `nrep` (Number of iterations)
+   * `nfold` (CV Multiple cross validation)
+   * `nIter` & `burnIn` (set Markov chain length of the R packages "**BGLR**")
+   * `gwas` (defult=T, Whether to perform GWAS operation)
+   * `gs` (defult=T, Whether to perform GS operation)
+   * `file.output` (Whether the operation result file is output)
+   * `plot` (Whether curve drawing is carried out on the results can show the prediction accuracy of the results)
+   
 <br>
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
 This currently includes:<br>
 ### `GbyE.R`
-Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
+The following is used to support GbyE runs and to run tests and refine GbyE builds. unlike the main GbyE function package, GbyE.test.R adds simulation functions for testing GbyE only. the following are the parameters of this function, including <br>
    * `GD` (Genotype file,type [0,1,2])
    * `GM` (SNP marker map file with SNP names, Chrosome and Position)
    * `Y` (Phenotype file,If the model phenotype is not used and the real phenotype prediction is directly used, please enter this file)
