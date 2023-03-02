@@ -21,7 +21,8 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
    * `dpi`(Set the resolution of the output image, default=600)
 # **Predictable results**
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
-# *Genome-wide association studies*
+## **Genome-wide association studies**
+Manhattan Plot <br>
 <br>
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
