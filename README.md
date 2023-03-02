@@ -20,6 +20,10 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
    * `plot` (Whether curve drawing is carried out on the results can show the prediction accuracy of the results)
    * `file.type`(Set the output image format, the default is PDF)
    * `dpi`(Set the resolution of the output image, default=600)
+## **Output**
+The output results contain three panels, `GbyE`, `GWAS` and `GS`. ``GbyE`` mainly includes the output GbyE genotype file and phenotype file. gwas mainly includes additive effect adde, reciprocal effect GbyE, overall summary result of GWAS, GMM mapping parameter file. gs mainly includes, prediction result of all missing values pred, rrBLUP. The prediction parameters of rrBLUP, the prediction parameters of GAPIT software gapit, the prediction parameters of BGLR software bglr
+
+Translated with www.DeepL.com/Translator (free version)
 # **Predictable results**
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
 ## **Genome-wide association studies**
