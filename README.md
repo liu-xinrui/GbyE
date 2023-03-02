@@ -5,15 +5,23 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
    * `GD` (Genotype file,type [0,1,2])
    * `GM` (SNP marker map file with SNP names, Chrosome and Position)
    * `Y` (Phenotype file,The phenotype file must contain two environments or two traits)
-   * `GbyE.GD``GbyE.GM` (If you have previously performed GbyE operations and saved a GbyE file, you can add the file directly to GbyE to reduce the time cost incurred by calculating again)
-   * `nrep` (Number of iterations)
-   * `nfold` (CV Multiple cross validation)
-   * `nIter` & `burnIn` (set Markov chain length of the R packages "**BGLR**")
+   * `GbyE.GD` & `GbyE.GM` (If you have previously performed GbyE operations and saved a GbyE file, you can add the file directly to GbyE to reduce the time cost incurred by calculating again)
    * `gwas` (defult=T, Whether to perform GWAS operation)
+   * `PCA.total` (Number of principal components as covariates at GWAS)
+   * `CV` (GbyE is based on GAPIT operations, and like GAPIT, it runs with covariates for operations)
+   * `gwas.model`(Select the GWAS analysis model you need, theoretically you can use all GAPIT models, such as: 'MLM', 'CMLM', 'BLINK', 'MLMM')
+   * `cutOff`(Allows setting a threshold of significance when drawing)
    * `gs` (defult=T, Whether to perform GS operation)
+   * `method`(Set the operation method of GS, currently only 'BGLR', 'rrBLUP' and 'GAPIT' are supported)
+   * `gs.model`(GS model: rrblup-default-"ML", gapit "gblup" "mablup" "cblup" "sblup", bglr "RRB" "BA" "BC" "BB" "BL")
+   * `nIter` & `burnIn` (set Markov chain length of the R packages "**BGLR**")
    * `file.output` (Whether the operation result file is output)
    * `plot` (Whether curve drawing is carried out on the results can show the prediction accuracy of the results)
-   
+   * `file.type`(Set the output image format, the default is PDF)
+   * `dpi`(Set the resolution of the output image, default=600)
+# **Predictable results**
+Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
+# *Genome-wide association studies*
 <br>
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
