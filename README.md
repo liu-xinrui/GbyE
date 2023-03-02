@@ -1,7 +1,7 @@
 # **GbyE**
 Effect model of gene-environment interaction, involved in predictive analysis of GWAS and GS<br>
 ![GbyE](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/GbyE.png)
-# **Introduction**
+## **Introduction**
 Gbye main package, coordinate other function packages for GWAS and GS operations, sometimes, We need to prepare documents, including <br>
    * `GD` (Genotype file,type [0,1,2])
    * `GM` (SNP marker map file with SNP names, Chrosome and Position)
@@ -28,6 +28,18 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
 ***Quantile-Quantile Plots*** <br>
 ![QQ Plot by demo data](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/QQplot.jpg)
 <br>
+## **How to use**
+```source("https://raw.githubusercontent.com/liu-xinrui/GbyE/main/GbyE.R")
+source("https://raw.githubusercontent.com/liu-xinrui/data/main/gapit_functions.txt")
+source("https://raw.githubusercontent.com/liu-xinrui/data/main/GAPIT.library.R")
+#Please import your own data below
+GD=read.table("mdp_numeric.txt",head=T)
+GM=read.table("mdp_SNP_information.txt",head=T)
+Y=read.table("mdp_traits.txt",head=T)
+Y=Y[match(GD[,1],Y[,1]),]
+#running
+myGbyE=GbyE(GD=GD,GM=GM,Y=Y,PCA.total=3,gwas=F,gs=T,plot=T,gwas.model="MLM",method="gapit")
+```
 # **Improve GbyE's test function package**<br>
 Here is a small function package related to gbye operation, which helps to run gbye programs more conveniently<br>
 This currently includes:<br>
