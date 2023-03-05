@@ -33,7 +33,8 @@ Gbye main package, coordinate other function packages for GWAS and GS operations
 ***Quantile-Quantile Plots*** <br>
 ![QQ Plot by demo data](https://raw.githubusercontent.com/liu-xinrui/GbyE/main/base/QQplot.jpg)
 <br>
-# **How to use**
+# **Analysis**
+## **Example**
 ```
 #Loading support packages
 source("https://raw.githubusercontent.com/liu-xinrui/GbyE/main/GbyE.R")
@@ -50,12 +51,56 @@ Y=Y[match(GD[,1],Y[,1]),]
 
 #Run GbyE
 myGbyE=GbyE(GD=GD,
-            GM=GM,Y=Y,
-            PCA.total=3,
-            gwas=F,gs=T,
-            plot=T,
-            gwas.model="MLM",
-            method="gapit")
+  GM=GM,
+  Y=Y,
+  PCA.total=3,
+  gwas=T,
+  gs=T,
+  plot=T,
+  gwas.model="MLM",
+  method="gapit")
+```
+## **GWAS**
+```
+#GAPIT-" MLM" " CMLM" ,"BLINK" "FramCPU" "SUPER" etc
+GbyE_GWAS=GbyE(GD=GD,
+  GM=GM,
+  Y=Y,
+  PCA.total=3,
+  gwas=T,
+  plot=T,
+  gwas.model=c("MLM","CMLM","BLINK","FramCPU","SUPER"))
+```
+## **GS**
+### **rrBLUP**
+```
+#Support all rrblup built-in methods
+GbyE_GS_rrBLUP=GbyE(GD=GD,
+  GM=GM,
+  Y=Y,
+  gs=T,
+  method="rrblup",
+  gs.model="ML")
+```
+### **GAPIT**
+```
+#Support all GAPIT built-in methods
+GbyE_GS_GAPIT=GbyE(GD=GD,
+  GM=GM,
+  Y=Y,
+  gs=T,
+  method="gapit",
+  gs.model=c("gBLUP","MABLUP","cBLUP","sBLUP"))
+```
+### **BGLR**
+```
+#Support all rrblup built-in methods
+GbyE_GS_BGLR=GbyE(GD=GD,
+  GM=GM,
+  Y=Y,
+  gs=T,
+  method="bglr",
+  gs.model="RRB") #BL BA BB BC RRB etc
 ```
 
 # **Improve GbyE's test function package**<br>
